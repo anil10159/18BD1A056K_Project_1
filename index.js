@@ -41,7 +41,7 @@ app.get('/ventilatordetails', middleware.checkToken,(req,res)=>{
 });
 
 //search ventilators bt its status
-app.post('/searchventbystatus',middleware.checkToken,(re,res)=>{
+app.post('/searchventbystatus',middleware.checkToken,(req,res)=>{
     var status=req.body.status;
     console.log(status);
     var data=db.collection('ventilators')
@@ -54,7 +54,7 @@ app.post('/searchventbyname',middleware.checkToken,(req,res)=>{
     var name=req.query.name;
     console.log(name);
     var data=db.collection('ventilators')
-    .find({'name':new RegExp(name,'i')}).toArray().then(result=>res.josn(result));
+    .find({'name':new RegExp(name,'i')}).toArray().then(result=>res.json(result));
 
 });
 
@@ -63,7 +63,7 @@ app.post('/searchhospbyname',middleware.checkToken,(req,res)=>{
     var name=req.query.name;
     console.log(name);
     var data=db.collection('hospital')
-    .find({'name':new RegExp(name,'i')}).toArray().then(result=>res.josn(result));
+    .find({'name':new RegExp(name,'i')}).toArray().then(result=>res.json(result));
 });
 
 //update ventilator details
@@ -87,20 +87,21 @@ app.put('/addventilator',middleware.checkToken,(req,res)=>{
     console.log(insert);
     db.collection('ventilators').insertOne(insert,function(err,response){
         if(err) throw err;
-        res.send("inserted succesfully");
+        res.json('inserted succesfully');
         console.log("one document inserted");
     });
 });
 
 //delete ventilators details by ventilatorId
-app.post('/deleteventbyId',middleware.checkToken,(req,res)=>{
+app.delete('/deleteventbyId',middleware.checkToken,(req,res)=>{
     var delet={ventilatorId: req.body.ventilatorId};
     console.log(delet);
     db.collection('ventilators').deleteOne(delet,function(err,response){
         if(err) throw err;
-        res.send("deleted succesfully");
+        res.json('deleted succesfully');
         console.log("one document deleted");
     });
 });
 
-app.listen(3002);
+
+app.listen(8000);
